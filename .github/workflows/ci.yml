@@ -25,13 +25,12 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Install Chrome and ChromeDriver
+      - name: Install Chromium and ChromeDriver
         run: |
           sudo apt update
-          sudo apt install -y google-chrome-stable
-          sudo apt install -y chromium-chromedriver
+          sudo apt install -y chromium-browser chromium-chromedriver
+          echo "CHROME_BIN=$(which chromium-browser)" >> $GITHUB_ENV
           echo "CHROMEDRIVER_PATH=$(which chromedriver)" >> $GITHUB_ENV
-          echo "CHROME_BIN=$(which google-chrome)" >> $GITHUB_ENV
 
       - name: Run Selenium test
         env:

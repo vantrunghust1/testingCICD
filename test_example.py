@@ -1,11 +1,16 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import os
 
 options = Options()
-options.add_argument("--no-sandbox")  # Tránh vấn đề quyền hạn trong môi trường CI
-options.add_argument("--disable-dev-shm-usage")  # Khắc phục lỗi bộ nhớ chia sẻ
-options.add_argument("--headless")  # Chạy không giao diện (bắt buộc trên CI/CD)
-options.add_argument("--user-data-dir=/tmp/chrome-user-data")  # Đặt thư mục user-data riêng
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--headless")
+options.add_argument("--user-data-dir=/tmp/chrome-user-data")
+
+# Lấy đường dẫn Chrome từ biến môi trường
+chrome_bin_path = os.getenv("CHROME_BIN", "/usr/bin/chromium-browser")
+options.binary_location = chrome_bin_path
 
 driver = webdriver.Chrome(options=options)
 driver.get("https://www.google.com")
