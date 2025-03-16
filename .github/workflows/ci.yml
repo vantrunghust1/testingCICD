@@ -24,8 +24,17 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          sudo apt update && sudo apt install -y chromium-chromedriver
+
+      - name: Install Chrome and ChromeDriver
+        run: |
+          sudo apt update
+          sudo apt install -y google-chrome-stable
+          sudo apt install -y chromium-chromedriver
           echo "CHROMEDRIVER_PATH=$(which chromedriver)" >> $GITHUB_ENV
+          echo "CHROME_BIN=$(which google-chrome)" >> $GITHUB_ENV
 
       - name: Run Selenium test
+        env:
+          CHROME_BIN: ${{ env.CHROME_BIN }}
+          CHROMEDRIVER_PATH: ${{ env.CHROMEDRIVER_PATH }}
         run: python test_example.py
