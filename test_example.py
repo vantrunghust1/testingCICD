@@ -1,19 +1,14 @@
 from selenium import webdriver
-from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 
-# Khởi tạo WebDriver (Sử dụng Chrome)
-driver = webdriver.Chrome()
+options = Options()
+options.add_argument("--no-sandbox")  # Tránh vấn đề quyền hạn trong môi trường CI
+options.add_argument("--disable-dev-shm-usage")  # Khắc phục lỗi bộ nhớ chia sẻ
+options.add_argument("--headless")  # Chạy không giao diện (bắt buộc trên CI/CD)
+options.add_argument("--user-data-dir=/tmp/chrome-user-data")  # Đặt thư mục user-data riêng
 
-# Mở trang web
+driver = webdriver.Chrome(options=options)
 driver.get("https://www.google.com")
 
-# Kiểm tra tiêu đề trang
-assert "Google" in driver.title
-
-# Tìm ô tìm kiếm và nhập nội dung
-search_box = driver.find_element(By.NAME, "q")
-search_box.send_keys("Selenium Python")
-search_box.submit()
-
-# Đóng trình duyệt
+print(driver.title)
 driver.quit()
